@@ -64,12 +64,17 @@ public class TarefasController {
 		
 		@RequestMapping(value="atualiza",
 				method=RequestMethod.POST)
-		public String atualiza(Tarefa tarefa){
-			TarefasDao dao = TarefasDao.getInstance();
-			int x =tarefa.getId();
-			dao.listaTarefas.set(x, tarefa);
-			return "redirect:/tarefa/lista";
-			
+		public String atualiza(@Valid Tarefa tarefa, BindingResult result, Model model){
+			if(result.hasFieldErrors("descricao")){
+				model.addAttribute("idx",tarefa.getId());
+				return "tarefas/segundoForm";
+				
+			}else{
+				TarefasDao dao = TarefasDao.getInstance();
+				int x =tarefa.getId();
+				dao.listaTarefas.set(x, tarefa);
+				return "redirect:/tarefa/lista";
+			}
 		}
 		
 	
